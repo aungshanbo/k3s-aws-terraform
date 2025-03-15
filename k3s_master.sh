@@ -14,15 +14,17 @@ curl -sfL https://get.k3s.io | K3S_VERSION=${K3S_VERSION} K3S_TOKEN=${K3S_CLUSTE
 cat <<'EOF' > /usr/local/bin/drain_node.sh
 #!/bin/bash
 
-# Watch for nodes in NotReady state
-kubectl get nodes --watch | while read line; do
+# nodes in NotReady state
+kubectl get nodes | while read line; do
   node_status=$(echo $line | awk '{print $2}')
   node_name=$(echo $line | awk '{print $1}')
-  
+
   # Check if the node is NotReady
-  if [[ "$node_status" == "NotReady" ]]; then
+  echo $node_name $node_status
+  if [[ "$node_status" =~ "NotReady" ]]; then
     echo "Node $node_name is NotReady, draining the node..."
-    kubectl drain $node_name --ignore-daemonsets --delete-local-data
+    kubectl delete nodes $node_name --wait=false
+    echo "Done $node_name"
   fi
 done
 EOF
