@@ -4,7 +4,7 @@ resource "aws_launch_template" "k3s_worker_lt" {
     key_name = var.ssh_key_name
 
     network_interfaces {
-      associate_public_ip_address = false 
+      associate_public_ip_address = true 
       security_groups = [aws_security_group.k3s_worker_sg.id]
     }
 
