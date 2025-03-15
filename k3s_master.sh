@@ -30,4 +30,4 @@ EOF
 sudo chmod +x /usr/local/bin/drain_node.sh
 
 # Create a cron job to run the drain node script every minute (or change the timing as needed)
-echo "* * * * * /usr/local/bin/drain_node.sh" | sudo tee /etc/cron.d/drain_node_cron
+echo "* * * * * root /usr/local/bin/drain_node.sh" | sudo tee /etc/cron.d/drain_node_cron
