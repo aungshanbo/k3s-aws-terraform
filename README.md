@@ -7,7 +7,7 @@ This project automates the deployment of a highly available [K3s](https://k3s.io
 ## Features
 
 - **Automated Deployment:** Utilizes Terraform to provision AWS infrastructure and set up K3s.
-- **High Availability:** Configures EC2 Auto Scaling for master and worker nodes to maintain desired cluster size.
+- **High Availability:** Configures EC2 Auto Scaling for master and worker nodes to maintain desired cluster size and Watch the Node Ready and Node Ready to delete with cron service.
 - **Cost-Effective:** Implements a lightweight Kubernetes distribution suitable for various workloads.
 
 ## Prerequisites
