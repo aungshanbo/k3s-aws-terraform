@@ -17,21 +17,6 @@ resource "aws_launch_template" "k3s_worker_lt" {
     depends_on = [aws_lb.k3s_master_lb]
 }
 
-resource "aws_lb_target_group" "k3s_worker_tg" {
-  name = "k3s-worker-tg"
-  port = 6443
-  protocol = "TCP"
-  vpc_id = aws_vpc.k3s_vpc.id
-
-  health_check {
-    interval            = 10
-    timeout             = 5
-    protocol            = "TCP"
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-  }
-}
-
 resource "aws_autoscaling_group" "k3s_worker_asg" {
   vpc_zone_identifier = [ aws_subnet.nodeip_public.id ]
   desired_capacity = 3
@@ -42,8 +27,9 @@ resource "aws_autoscaling_group" "k3s_worker_asg" {
     id      = aws_launch_template.k3s_worker_lt.id
     version = "$Latest"
   }
-  target_group_arns = [aws_lb_target_group.k3s_worker_tg.arn]
   health_check_type = "EC2"
+  health_check_grace_period = 300
+  force_delete              = true
   tag {
     key                 = "Name"
     value               = "k3s-worker"
